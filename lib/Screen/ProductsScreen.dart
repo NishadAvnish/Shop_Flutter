@@ -28,6 +28,31 @@ class ProductScreen extends StatelessWidget {
         description: "A red shirt it is really good",
         price: 90.00,
         image: "https://i.ytimg.com/vi/sJIU1F0qk_I/maxresdefault.jpg"),
+
+    Product(
+        id: 'p1',
+        title: 'Red-SAhirt',
+        description: "A red shirt it is really good",
+        price: 90.00,
+        image: "https://i.ytimg.com/vi/sJIU1F0qk_I/maxresdefault.jpg"),
+    Product(
+        id: 'p2',
+        title: 'Red-Pant',
+        description: "A red shirt it is really good",
+        price: 90.00,
+        image: "https://i.ytimg.com/vi/sJIU1F0qk_I/maxresdefault.jpg"),
+    Product(
+        id: 'p3',
+        title: 'gggggg',
+        description: "A red shirt it is really good",
+        price: 90.00,
+        image: "https://i.ytimg.com/vi/sJIU1F0qk_I/maxresdefault.jpg"),
+    Product(
+        id: 'p4',
+        title: 'tshirt',
+        description: "A red shirt it is really good",
+        price: 90.00,
+        image: "https://i.ytimg.com/vi/sJIU1F0qk_I/maxresdefault.jpg"),
   ];
 
   @override
@@ -40,7 +65,7 @@ class ProductScreen extends StatelessWidget {
         body: GridView.builder(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
-              childAspectRatio: 3 / 2,
+              childAspectRatio: 2 / 2.5,
               mainAxisSpacing: 10,
               crossAxisSpacing: 10
               //cross axis space bt column , main axis spacing bt rows
