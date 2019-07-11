@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-class Product{
+class ProductModel{
    final String id;
    final String title,description;
    final double price;
@@ -8,6 +8,6 @@ class Product{
 
    bool isFavorite;
 
-   Product({@required this.id, @required this.title,@required  this.description, @required this.price,@required  this.image,
+   ProductModel({@required this.id, @required this.title,@required  this.description, @required this.price,@required  this.image,
        this.isFavorite=false});
 }
