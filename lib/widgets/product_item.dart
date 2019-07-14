@@ -12,7 +12,7 @@ class ProductItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    final loadeditem=Provider.of<ProductModel>(context);
+    final loadeditem=Provider.of<ProductModel>(context,listen: false);
 
     return Container(
         decoration: BoxDecoration(
@@ -33,7 +33,8 @@ class ProductItem extends StatelessWidget {
                   fit: BoxFit.fill,
                 )),
             footer: GridTileBar(
-              leading: IconButton(
+              leading: Consumer<ProductModel>(     //consumer is used when you dont want to rebuild whole istead the widget in consumer.
+                builder:(context,loadeditem,child)=>IconButton(
                   icon: Icon(loadeditem.isFavorite ?Icons.favorite:Icons.favorite_border),
                     color: Theme.of(context).accentColor,
 
@@ -41,7 +42,7 @@ class ProductItem extends StatelessWidget {
 
                   }
                   ),
-
+              ),
 
               trailing: IconButton(
                   icon: Icon(
