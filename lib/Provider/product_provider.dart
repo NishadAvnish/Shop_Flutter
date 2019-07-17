@@ -13,7 +13,7 @@ class ProductProvider with ChangeNotifier{
     ProductModel(
         id: 'p2',
         title: 'Red-Pant',
-        description: "A red shirt it is really good",
+        description: "A red shirt it is really goodskjdknsakjsbmnsmcmsbmnbsndbkjaskjhkdsbabsj,dnbmnbsc  hjasdjbsd jhsdjbas jhgsdkjbasm hsbdjbasdb hadsgjhabsd asdjhgjhgsdb jhasgdjhba dg ajhgahsbd dahgjabdmn a jhagdjasd jhasdjbasd jhasgdj sadb",
         price: 90.00,
         image: "https://i.ytimg.com/vi/sJIU1F0qk_I/maxresdefault.jpg"),
     ProductModel(
@@ -55,9 +55,23 @@ class ProductProvider with ChangeNotifier{
         image: "https://i.ytimg.com/vi/sJIU1F0qk_I/maxresdefault.jpg"),
   ];
 
+
   List<ProductModel> get items{
+    print("item called");
     return [..._items];
+
   }
+
+  List<ProductModel> get favouriteItems
+  {print("favourite item called");
+    return  _items.where((prod)=> prod.isFavorite).toList();
+  }
+
+  ProductModel findById(String id) {
+    return _items.firstWhere((prod) => prod.id == id);
+  }
+
+
 
   void addProduct()
   {

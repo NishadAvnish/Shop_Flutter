@@ -20,7 +20,6 @@ class ProductModel with ChangeNotifier {
     // ignore: unnecessary_statements
     isFavorite=!isFavorite;
     notifyListeners();
-    print(isFavorite);
 
   }
 }

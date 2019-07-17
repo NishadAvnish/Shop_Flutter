@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop4/Model/products_model.dart';
+import 'package:shop4/Provider/cart_provider.dart';
 import '../Screen/product_detail_screen.dart';
 
 class ProductItem extends StatelessWidget {
@@ -13,6 +14,7 @@ class ProductItem extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     final loadeditem=Provider.of<ProductModel>(context,listen: false);
+    final cartItem=Provider.of<CartProvider>(context,listen:false);
 
     return Container(
         decoration: BoxDecoration(
@@ -40,16 +42,21 @@ class ProductItem extends StatelessWidget {
 
                   onPressed: (){loadeditem.toggleFavourite();
 
-                  }
+                  } 
                   ),
               ),
 
-              trailing: IconButton(
-                  icon: Icon(
-                    Icons.shopping_cart,
-                    color: Theme.of(context).accentColor,
-                  ),
-                  onPressed: null),
+              trailing: Consumer<CartProvider>(
+                builder: (context,cartItem,child)=>
+                  IconButton(
+                      icon: Icon(
+                        Icons.shopping_cart,
+                        color: Theme.of(context).accentColor,
+                      ),
+                      onPressed: ()=>{
+                        cartItem.addItem(loadeditem.id,loadeditem.title,loadeditem.price)}),
+
+              ),
               backgroundColor: Colors.black54,
               title: Text(
                 loadeditem.title,
