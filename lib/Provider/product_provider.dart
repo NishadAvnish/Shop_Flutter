@@ -6,32 +6,14 @@ class ProductProvider with ChangeNotifier{
 
   List<ProductModel> _items=[    ProductModel(
       id: 'p1',
-      title: 'Red-SAhirt',
+      title: 'Red-Shirt',
       description: "A red shirt it is really good",
       price: 90.00,
       image: "https://i.ytimg.com/vi/sJIU1F0qk_I/maxresdefault.jpg"),
-    ProductModel(
-        id: 'p2',
-        title: 'Red-Pant',
-        description: "A red shirt it is really goodskjdknsakjsbmnsmcmsbmnbsndbkjaskjhkdsbabsj,dnbmnbsc  hjasdjbsd jhsdjbas jhgsdkjbasm hsbdjbasdb hadsgjhabsd asdjhgjhgsdb jhasgdjhba dg ajhgahsbd dahgjabdmn a jhagdjasd jhasdjbasd jhasgdj sadb",
-        price: 90.00,
-        image: "https://i.ytimg.com/vi/sJIU1F0qk_I/maxresdefault.jpg"),
-    ProductModel(
-        id: 'p3',
-        title: 'gggggg',
-        description: "A red shirt it is really good",
-        price: 90.00,
-        image: "https://i.ytimg.com/vi/sJIU1F0qk_I/maxresdefault.jpg"),
-    ProductModel(
-        id: 'p4',
-        title: 'tshirt',
-        description: "A red shirt it is really good",
-        price: 90.00,
-        image: "https://i.ytimg.com/vi/sJIU1F0qk_I/maxresdefault.jpg"),
 
     ProductModel(
         id: 'p1',
-        title: 'Red-SAhirt',
+        title: 'Red-Shirt',
         description: "A red shirt it is really good",
         price: 90.00,
         image: "https://i.ytimg.com/vi/sJIU1F0qk_I/maxresdefault.jpg"),
@@ -57,13 +39,12 @@ class ProductProvider with ChangeNotifier{
 
 
   List<ProductModel> get items{
-    print("item called");
     return [..._items];
 
   }
 
   List<ProductModel> get favouriteItems
-  {print("favourite item called");
+  {
     return  _items.where((prod)=> prod.isFavorite).toList();
   }
 

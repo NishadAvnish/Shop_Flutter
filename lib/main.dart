@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import './Screen/ProductsScreen.dart';
 import 'Provider/cart_provider.dart';
 import 'Provider/product_provider.dart';
+import 'Screen/cartscreen.dart';
 import 'Screen/product_detail_screen.dart';
 
 main() => runApp(MyApp());
@@ -19,14 +20,19 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider.value(value: CartProvider()),
         ],
         child: MaterialApp(
+            debugShowCheckedModeBanner: false,
             title: 'MyShop',
             theme: ThemeData(
                 primarySwatch: Colors.purple,
                 accentColor: Colors.deepOrange,
+                cursorColor: Colors.amberAccent,
+                primaryColor: Colors.purple,
+                primaryColorDark: Colors.white,
                 fontFamily: 'Teko'),
             home: ProductScreen(), //object of class product
             routes: {
-              ProductDetailScreen.routeName: (context) => ProductDetailScreen()
+              ProductDetailScreen.routeName: (context) => ProductDetailScreen(),
+              CartScreenState.routeName: (ctx) => CartScreen(),
             }));
   }
 }

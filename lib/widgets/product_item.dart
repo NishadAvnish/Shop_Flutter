@@ -13,7 +13,7 @@ class ProductItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    final loadeditem=Provider.of<ProductModel>(context,listen: false);
+    ProductModel loadeditem=Provider.of<ProductModel>(context,listen: false);
     final cartItem=Provider.of<CartProvider>(context,listen:false);
 
     return Container(
@@ -26,10 +26,9 @@ class ProductItem extends StatelessWidget {
             child: GestureDetector(
                 onTap: () {
                   Navigator.of(context).pushNamed(ProductDetailScreen.routeName,arguments:loadeditem.id);
-
                       /*MaterialPageRoute(
-                      builder: (context) => ProductDetailScreen(title)));*/
-                },
+                      builder: (context) => ProductDetailScreen(title)));*/},
+
                 child: Image.network(
                   loadeditem.image,
                   fit: BoxFit.fill,
@@ -40,24 +39,26 @@ class ProductItem extends StatelessWidget {
                   icon: Icon(loadeditem.isFavorite ?Icons.favorite:Icons.favorite_border),
                     color: Theme.of(context).accentColor,
 
-                  onPressed: (){loadeditem.toggleFavourite();
-
-                  } 
-                  ),
+                  onPressed: (){
+                    loadeditem.toggleFavourite();
+                                 }
+                 ),
               ),
 
-              trailing: Consumer<CartProvider>(
-                builder: (context,cartItem,child)=>
+              trailing:
                   IconButton(
                       icon: Icon(
-                        Icons.shopping_cart,
+                        Icons.shopping_basket,
                         color: Theme.of(context).accentColor,
                       ),
                       onPressed: ()=>{
-                        cartItem.addItem(loadeditem.id,loadeditem.title,loadeditem.price)}),
+                        cartItem.addItem(loadeditem.id,  loadeditem.title,loadeditem.price),
+
+                      }
+
 
               ),
-              backgroundColor: Colors.black54,
+              backgroundColor: Colors.black45,
               title: Text(
                 loadeditem.title,
                 textAlign: TextAlign.center,

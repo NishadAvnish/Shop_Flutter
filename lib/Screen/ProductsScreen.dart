@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:shop4/Provider/cart_provider.dart';
 import 'package:shop4/Provider/product_provider.dart';
 import '../widgets/product_item.dart';
 import 'package:provider/provider.dart';
+import '../widgets/badge.dart';
+import 'cartscreen.dart';
+
 
 enum filterOption {
   favourite,
@@ -27,24 +31,34 @@ class ProductOverviewScreenState extends State<ProductScreen> {
                 setState(() {
                   if (selectedValue == filterOption.favourite) {
                     _showOnlyFavourite = true;
-                    print(_showOnlyFavourite);
                   } else {
                     _showOnlyFavourite = false;
-                    _showOnlyFavourite;
                   }
                 });
               },
               icon: Icon(Icons.more_vert),
-              itemBuilder: (_) => [
-                    PopupMenuItem(
-                        child: Text('Favourite'),
-                        value: filterOption.favourite),
-                    PopupMenuItem(
-                      child: Text('All'),
-                      value: filterOption.all,
-                    )
-                  ],
-            )
+              itemBuilder: (_) =>
+              [
+                PopupMenuItem(
+                    child: Text('Favourite'), value: filterOption.favourite),
+                PopupMenuItem(
+                  child: Text('All'),
+                  value: filterOption.all,
+                )
+              ],
+            ),
+            Consumer<CartProvider>(builder: (_, cartitem, ch) =>
+                Badge(
+                    child: ch,
+                    value: cartitem.itemCount.toString(),
+                ),
+
+              //now the IconButton doesn't rebuild ...
+              child: IconButton(
+                icon: Icon(Icons.shopping_cart,color: Colors.white,),
+                onPressed: ()=>{Navigator.of(context).pushNamed(CartScreenState.routeName)},
+              ),
+            ),
           ],
         ),
         body: ProductGrid(_showOnlyFavourite));
@@ -58,9 +72,8 @@ class ProductGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Products = Provider.of<ProductProvider>(context);
-    final loadedProducts =showfavourite ? Products.favouriteItems : Products.items;
-
+    final products = Provider.of<ProductProvider>(context);
+    final loadedProducts = showfavourite ? products.favouriteItems : products.items;
 
     if (loadedProducts.length == 0) {
       return Center(
@@ -73,21 +86,21 @@ class ProductGrid extends StatelessWidget {
       return GridView.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
-            childAspectRatio: 2 / 2.5,
+            childAspectRatio: 3/2.3 ,
             mainAxisSpacing: 10,
             crossAxisSpacing: 10
-            //cross axis space bt column , main axis spacing bt rows
-            ),
+          //cross axis space bt column , main axis spacing bt rows
+        ),
         itemCount: loadedProducts.length,
-        itemBuilder: (context, i) => ChangeNotifierProvider.value(
-            value:loadedProducts[i],
-            child: ProductItem(
-                /*loadedProducts[i].id,
+        itemBuilder: (context, i) =>
+            ChangeNotifierProvider.value(
+                value: loadedProducts[i],
+                child: ProductItem(
+                  /*loadedProducts[i].id,
             loadedProducts[i].title,
             loadedProducts[i].image,*/
                 )),
         padding: const EdgeInsets.all(10.0),
-
       );
     }
   }
