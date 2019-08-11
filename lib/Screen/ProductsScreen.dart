@@ -21,10 +21,13 @@ class ProductOverviewScreenState extends State<ProductScreen> {
   var _showOnlyFavourite = false;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context1) {
+
     return Scaffold(
+      drawer:  myDrawer(),
         appBar: AppBar(
           title: Text('MYSHOP'),
+          leading: drawerIcon(),
           actions: <Widget>[
             PopupMenuButton(
               onSelected: (filterOption selectedValue) {
@@ -65,6 +68,40 @@ class ProductOverviewScreenState extends State<ProductScreen> {
   }
 }
 
+ Widget myDrawer() {
+  List<IconData>icon =[Icons.shop,Icons.payment];
+  List<String> name=['Shop',"Order"];
+   return Drawer(
+       elevation: 10.0,
+       child: Column(
+        children: <Widget>[
+          AppBar(title:Text("Hello Friends"),
+          leading: drawerIcon(),),
+          Divider(),
+
+        ],
+       )
+
+       );
+}
+
+Builder drawerIcon(){
+ return  Builder(builder: (context)
+  {
+    return  IconButton(
+        icon: Icon(
+          Icons.clear_all,
+          color: Colors.amber,
+        ),
+        onPressed: () {
+          Scaffold.of(context).openDrawer();
+
+          //_scaffoldKey.currentState.openDrawer();
+        }
+
+    );
+  },);
+}
 class ProductGrid extends StatelessWidget {
   final bool showfavourite;
 

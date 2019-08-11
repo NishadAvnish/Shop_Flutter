@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop4/Provider/cart_provider.dart';
+import 'package:shop4/widgets/AppBarCartScreen.dart';
 import 'package:shop4/widgets/CartItem.dart';
 import 'package:shop4/widgets/sliverExpandableAreaWidget.dart';
 
@@ -28,7 +29,7 @@ class CartScreen extends StatefulWidget{
       home:Scaffold(
         //appBar: AppBar(title:Center( child:Text('CART',style: TextStyle(fontFamily:'Teko',fontSize: 20*scaleFactor ),),)),
 
-        body: CustomScrollView(
+        body: (cart.items.length>4 && cart.items!=null)?CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(
              leading: IconButton(icon:Icon(Icons.arrow_back),
@@ -77,7 +78,7 @@ class CartScreen extends StatefulWidget{
            )
 
           ],
-        )
+        ):myAppBar()
 
         ),
       theme: ThemeData(
