@@ -1,24 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop4/Provider/OrderProvider.dart';
 import 'package:shop4/Provider/cart_provider.dart';
-import 'package:shop4/widgets/sliverExpandableAreaWidget.dart';
 
 import 'CartItem.dart';
 
-class myAppBar extends StatefulWidget {
+class MyAppBar extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return myAppBarState();
+    return MyAppBarState();
   }
 }
 
-class myAppBarState extends State<myAppBar> {
+class MyAppBarState extends State<MyAppBar> {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    return MaterialApp(
-      home: Scaffold(
+    return
+      Scaffold(
         appBar: AppBar(
           leading: IconButton(
               icon: Icon(
@@ -26,18 +25,23 @@ class myAppBarState extends State<myAppBar> {
                 color: Colors.amber,
               ),
               onPressed: () {
-                Navigator.pop(context, true);
+               Navigator.pop(context,false);
+               print("print clicked Avnish");
               }),
           title: Text("CART"),
         ),
+        resizeToAvoidBottomPadding: false,
         body: myScaffoldBody(context),
-      ),
+
     );
   }
 
   myScaffoldBody(BuildContext context) {
     final cart = Provider.of<CartProvider>(context);
+    final scaleFactor = MediaQuery.of(context).textScaleFactor;
     return Container(
+      height: MediaQuery.of(context).size.height-(MediaQuery.of(context).padding.top)-AppBar().preferredSize.height,
+      width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
         image: DecorationImage(
           image: NetworkImage(
@@ -45,25 +49,63 @@ class myAppBarState extends State<myAppBar> {
           fit: BoxFit.cover,
         ),
       ),
-      padding: EdgeInsets.only(top: 2),
-      child: Row(
+      child:Align(
+        alignment: Alignment.topCenter,
+
+      child: Column(
+
         children: <Widget>[
-          SliverExpandableAreaWidget().orderContainer(context),
-          //Spacer(flex: 2),
-          ListView.builder(
-            itemCount: cart.items.length,
-            itemBuilder: (context, i) {
-              return CartItemWidget(
-                cart.items.values.toList()[i].id,
-                cart.items.keys.toList()[i],
-                cart.items.values.toList()[i].price,
-                cart.items.values.toList()[i].quantity,
-                cart.items.values.toList()[i].title,
-              );
-            },
+          Card(
+          margin: EdgeInsets.all(15),
+          color: Colors.white,
+          child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Text(
+                    'Total',
+                    style: TextStyle(color: Theme.of(context).primaryColor, fontFamily: 'Dosis',fontSize: 20*scaleFactor),
+                  ),
+
+                  Chip(
+                    label: Text(
+                      '\$${cart.totalamout.toStringAsFixed(2)}',
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColorDark,
+                      ),
+                    ),
+                    backgroundColor: Theme.of(context).primaryColor,
+                  ),
+
+                  FlatButton(
+                    onPressed: () => {
+                      if(cart.items.length>0){
+                      Provider.of<OrderProvider>(context,listen: false).addOrder(cart.items.values.toList(), cart.totalamout),
+                      Provider.of<CartProvider>(context).clear(),}
+                    },
+                    child: Text('OrderNow',
+                        style: TextStyle(color: Theme.of(context).primaryColor)),
+                  )
+                ],
+
+
+              ),
           ),
-        ],
+       SizedBox(height: 8,),
+       Expanded(child:ListView.builder(
+           itemCount: cart.items.length,
+           itemBuilder:(context,index){
+             final item=cart.items.values.toList()[index];
+             return CartItemWidget(item.id,cart.items.keys.toList()[index],item.price,item.quantity,item.title);
+           }),)
+
+         ],
+       )
+
+
       ),
-    );
+      );
+          
+
   }
+
 }

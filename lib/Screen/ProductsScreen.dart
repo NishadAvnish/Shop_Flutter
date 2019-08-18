@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:shop4/Provider/OrderProvider.dart';
 import 'package:shop4/Provider/cart_provider.dart';
 import 'package:shop4/Provider/product_provider.dart';
+import 'package:shop4/widgets/Drawerwidg.dart';
 import '../widgets/product_item.dart';
 import 'package:provider/provider.dart';
 import '../widgets/badge.dart';
@@ -13,21 +15,22 @@ enum filterOption {
 }
 
 class ProductScreen extends StatefulWidget {
+  static const routeName='/productscreen';
   @override
-  ProductOverviewScreenState createState() => ProductOverviewScreenState();
+  _ProductScreenState createState() => _ProductScreenState();
 }
 
-class ProductOverviewScreenState extends State<ProductScreen> {
+class _ProductScreenState extends State<ProductScreen> {
+
   var _showOnlyFavourite = false;
 
   @override
   Widget build(BuildContext context1) {
-
     return Scaffold(
-      drawer:  myDrawer(),
+        drawer: Drawer(elevation: 10,child: MyDrawer(),),
         appBar: AppBar(
           title: Text('MYSHOP'),
-          leading: drawerIcon(),
+          leading: MyDrawer().drawerIcon(),
           actions: <Widget>[
             PopupMenuButton(
               onSelected: (filterOption selectedValue) {
@@ -52,14 +55,17 @@ class ProductOverviewScreenState extends State<ProductScreen> {
             ),
             Consumer<CartProvider>(builder: (_, cartitem, ch) =>
                 Badge(
-                    child: ch,
-                    value: cartitem.itemCount.toString(),
+                  child: ch,
+                  value: cartitem.itemCount.toString(),
                 ),
 
               //now the IconButton doesn't rebuild ...
               child: IconButton(
-                icon: Icon(Icons.shopping_cart,color: Colors.white,),
-                onPressed: ()=>{Navigator.of(context).pushNamed(CartScreenState.routeName)},
+                icon: Icon(Icons.shopping_cart, color: Colors.white,),
+                onPressed: () =>
+                {
+                  Navigator.of(context).pushNamed(CartScreenState.routeName)
+                },
               ),
             ),
           ],
@@ -68,40 +74,9 @@ class ProductOverviewScreenState extends State<ProductScreen> {
   }
 }
 
- Widget myDrawer() {
-  List<IconData>icon =[Icons.shop,Icons.payment];
-  List<String> name=['Shop',"Order"];
-   return Drawer(
-       elevation: 10.0,
-       child: Column(
-        children: <Widget>[
-          AppBar(title:Text("Hello Friends"),
-          leading: drawerIcon(),),
-          Divider(),
 
-        ],
-       )
 
-       );
-}
 
-Builder drawerIcon(){
- return  Builder(builder: (context)
-  {
-    return  IconButton(
-        icon: Icon(
-          Icons.clear_all,
-          color: Colors.amber,
-        ),
-        onPressed: () {
-          Scaffold.of(context).openDrawer();
-
-          //_scaffoldKey.currentState.openDrawer();
-        }
-
-    );
-  },);
-}
 class ProductGrid extends StatelessWidget {
   final bool showfavourite;
 
@@ -110,7 +85,8 @@ class ProductGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final products = Provider.of<ProductProvider>(context);
-    final loadedProducts = showfavourite ? products.favouriteItems : products.items;
+    final loadedProducts = showfavourite ? products.favouriteItems : products
+        .items;
 
     if (loadedProducts.length == 0) {
       return Center(
@@ -123,7 +99,7 @@ class ProductGrid extends StatelessWidget {
       return GridView.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
-            childAspectRatio: 3/2.3 ,
+            childAspectRatio: 3 / 2.3,
             mainAxisSpacing: 10,
             crossAxisSpacing: 10
           //cross axis space bt column , main axis spacing bt rows
