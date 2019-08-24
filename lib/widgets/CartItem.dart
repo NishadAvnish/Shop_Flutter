@@ -15,7 +15,7 @@ class CartItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scaleFactor = MediaQuery.of(context).textScaleFactor;
-    // TODO: implement build
+
     return Dismissible(
       direction: DismissDirection.endToStart,
       onDismissed: (direction) {

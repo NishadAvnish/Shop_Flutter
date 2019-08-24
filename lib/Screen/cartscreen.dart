@@ -7,7 +7,7 @@ import 'package:shop4/widgets/AppBarCartScreen.dart';
 class CartScreen extends StatefulWidget{
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
+
     return CartScreenState();
   }}
 

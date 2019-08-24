@@ -14,7 +14,7 @@ class ProductDetailScreen extends StatelessWidget{
     final items = Provider.of<ProductProvider>(context).findById(id);
 
    final providerid=Provider.of<ProductProvider>(context,listen: false).items.firstWhere((prod)=>prod.id==id);
-    // TODO: implement build
+
     return Scaffold(
       appBar: AppBar(title: Text(providerid.title.toUpperCase()),),
       body: ProductDetailWidget(items),
