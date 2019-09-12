@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shop4/Provider/products_model.dart';
 import 'package:shop4/Provider/cart_provider.dart';
 import '../Screen/product_detail_screen.dart';
+import '../Provider/AuthProvider.dart';
 
 class ProductItem extends StatelessWidget {
   /*final String id, title, imageurl;
@@ -11,6 +12,7 @@ class ProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authData=Provider.of<AuthProvider>(context,listen: false);
     ProductModel loadeditem = Provider.of<ProductModel>(context, listen: false);
     final cartItem = Provider.of<CartProvider>(context, listen: false);
 
@@ -41,7 +43,7 @@ class ProductItem extends StatelessWidget {
                         : Icons.favorite_border),
                     color: Theme.of(context).accentColor,
                     onPressed: () {
-                      loadeditem.toggleFavourite();
+                      loadeditem.toggleFavourite(authData.token,authData.userId);
                     }),
               ),
 

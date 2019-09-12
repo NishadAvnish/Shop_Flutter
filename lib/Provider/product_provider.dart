@@ -6,6 +6,11 @@ import 'dart:convert';
 
 class ProductProvider with ChangeNotifier {
   List<ProductModel> _items = [];
+  final String authToken;
+  final String userId;
+
+  ProductProvider(this.authToken, this.userId,
+      this._items); //cnstructor for having new token from auth provider
 
   List<ProductModel> get items {
     return [..._items];
@@ -19,62 +24,54 @@ class ProductProvider with ChangeNotifier {
     return _items.firstWhere((prod) => prod.id == id);
   }
 
-  Future<void> removeItem(var id) async {
-    final String url='https://flutter-shop-a7eef.firebaseio.com/products/$id.json';
-
-    final prodIndex = _items.indexWhere((prod) => prod.id == id);
-    var  extractedvalue=_items[prodIndex];
 
 
-      final response=await http.delete(url);
-      if(response.statusCode >=400 && response.statusCode<=600){
-        HttpExceptionModel("Something went wrong");
-      }
-
-      else{
-       _items.removeAt(prodIndex);
-       extractedvalue=null;
-
-         }
-      notifyListeners();
-  }
-
-  Future<void> fetchShow() async {
-    const String url =
-        'https://flutter-shop-a7eef.firebaseio.com/products.json';
-    List<ProductModel> list=[];
+  Future<void> fetchShow([bool filterByUser = false]) async {
+    final filterString=filterByUser?'orderBy="creator"&equalTo="$userId"':'';
+    var url =
+        "https://flutter-shop-a7eef.firebaseio.com/products.json?auth=$authToken&$filterString";
+    List<ProductModel> list = [];
     final response = await http.get(url);
     /*print(response.body);*/
     final extractedData = json.decode(response.body) as Map<String, dynamic>;
-    extractedData.forEach((prodId,value){
 
-      list.add(ProductModel(id:prodId,
-      title: value['title'],
-      price: value["price"],
-      description: value['description'],
-      isFavorite: value['isfavourite'],
-      image: value["image"],
+    if (extractedData == null) {
+      return;
+    }
+
+    url= 'https://flutter-shop-a7eef.firebaseio.com/userFavourites/$userId.json?auth=$authToken';
+    final favouriteResponse = await http.get(url);
+    final favouriteData =json.decode(favouriteResponse.body);
+
+
+    extractedData.forEach((prodId, value) {
+      list.add(ProductModel(
+        id: prodId,
+        title: value['title'],
+        price: value["price"],
+        description: value['description'],
+        isFavorite:favouriteData==null?false:favouriteData[prodId]??false,
+        image: value["image"],
       ));
     });
-    _items=list;
+    _items = list;
     notifyListeners();
   }
 
-
   Future<void> addProduct(ProductModel product) async {
-    const String url =
-        'https://flutter-shop-a7eef.firebaseio.com/products.json';
+    final String url =
+        'https://flutter-shop-a7eef.firebaseio.com/products.json?auth=$authToken';
     try {
       await http.post(url,
           body: json.encode({
+            'creator':userId,
             'title': product.title,
             'description': product.description,
             'price': product.price,
             'image': product.image,
-            'isfavourite':false,
           }));
 
-     /* final newproduct = ProductModel(
+      /* final newproduct = ProductModel(
         id: DateTime.now().toString(),
         title: product.title,
         price: product.price,
@@ -92,20 +89,20 @@ class ProductProvider with ChangeNotifier {
   }
 
   Future<void> updateProduct(ProductModel products, String id) async {
-    final String url="https://flutter-shop-a7eef.firebaseio.com/products/$id.json";
+    final String url =
+        "https://flutter-shop-a7eef.firebaseio.com/products/$id.json?auth=$authToken";
     try {
-      await http.patch(url,body: json.encode(
-        {
-          'title':products.title,
-          'description':products.description,
-          'price':products.price,
-          'image':products.image,
-        }
-      ));
-    } catch(error) {
-      throw(error);
+      await http.patch(url,
+          body: json.encode({
+            'title': products.title,
+            'description': products.description,
+            'price': products.price,
+            'image': products.image,
+          }));
+    } catch (error) {
+      throw (error);
     }
-   /* final prodIndex = _items.indexWhere((prod) => prod.id == id);
+    /* final prodIndex = _items.indexWhere((prod) => prod.id == id);
     if (prodIndex >= 0) {
       _items[prodIndex] = products;
     } else {
@@ -113,4 +110,24 @@ class ProductProvider with ChangeNotifier {
     }*/
     notifyListeners();
   }
-}
+
+  Future<void> removeItem(var id) async {
+    final String url =
+        'https://flutter-shop-a7eef.firebaseio.com/products/$id.json?auth=$authToken';
+
+    final prodIndex = _items.indexWhere((prod) => prod.id == id);
+    var extractedvalue = _items[prodIndex];
+
+
+    final response = await http.delete(url);
+    if (response.statusCode >= 400 && response.statusCode <= 600) {
+      HttpExceptionModel("Something went wrong");
+    } else
+
+              _items.removeAt(prodIndex);
+              extractedvalue = null;}
+
+    notifyListeners();
+
+  }
+
