@@ -48,7 +48,10 @@ class MyApp extends StatelessWidget {
                   primaryColor: Colors.purple,
                   primaryColorDark: Colors.white,
                   fontFamily: 'Teko'),
-              home: authData.isAuth?ProductScreen():AuthScreen(), //object of class product
+              home: authData.isAuth?ProductScreen():FutureBuilder(
+                future: authData.autoLogin(),
+                builder: (ctx,snapshot)=>snapshot.connectionState==ConnectionState.waiting?Center(child:CircularProgressIndicator()):AuthScreen(),
+              ), //object of class product
               routes: {
                 ProductDetailScreen.routeName: (context) => ProductDetailScreen(),
                 CartScreenState.routeName: (ctx) => CartScreen(),
