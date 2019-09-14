@@ -115,15 +115,21 @@ class ProductProvider with ChangeNotifier {
     final String url =
         'https://flutter-shop-a7eef.firebaseio.com/products/$id.json?auth=$authToken';
 
+    final String deleteUrl="https://flutter-shop-a7eef.firebaseio.com/userFavourites.json?auth=$userId&orderBy=$id&equalTo=true";
     final prodIndex = _items.indexWhere((prod) => prod.id == id);
     var extractedvalue = _items[prodIndex];
 
-
+    final deleteResponse=await http.delete(deleteUrl);
     final response = await http.delete(url);
+
     if (response.statusCode >= 400 && response.statusCode <= 600) {
       HttpExceptionModel("Something went wrong");
-    } else
-
+    }
+    else
+             if(deleteResponse.statusCode >= 400 && deleteResponse.statusCode <= 600)
+               {
+                 throw http.ClientException("Something went wrong");
+               }
               _items.removeAt(prodIndex);
               extractedvalue = null;}
 

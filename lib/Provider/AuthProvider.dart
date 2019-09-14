@@ -21,7 +21,9 @@ class AuthProvider with ChangeNotifier {
   }
 
   void logout(){
-    _token=_expiryDate=_userId=null;
+    _token=null;
+    _expiryDate=null;
+    _userId=null;
     notifyListeners();
 
     if(authTimer!=null){
@@ -29,7 +31,6 @@ class AuthProvider with ChangeNotifier {
       authTimer=null;
     }
 
-    print("$_token"+"    $_expiryDate"+"    $_userId");
   }
 
  void autoLogOut(){

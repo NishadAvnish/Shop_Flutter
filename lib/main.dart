@@ -6,7 +6,6 @@ import './Screen/ProductsScreen.dart';
 import 'Provider/OrderProvider.dart'show OrderProvider;
 import 'Provider/cart_provider.dart';
 import 'Provider/product_provider.dart';
-import 'Provider/products_model.dart';
 import 'Screen/EditUserProduct.dart';
 import 'Screen/OrderScreen.dart';
 import 'Screen/cartscreen.dart';
@@ -35,7 +34,7 @@ class MyApp extends StatelessWidget {
 
         ],
         child: Consumer<AuthProvider>(builder: (context,authData,_){
-
+          print("main consumer");
           return MaterialApp(
 
               debugShowCheckedModeBanner: false,
