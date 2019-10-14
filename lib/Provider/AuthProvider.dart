@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -20,7 +19,8 @@ class AuthProvider with ChangeNotifier {
     return _userId;
   }
 
-  void logout(){
+  Future logout() async {
+    print("Logout click");
     _token=null;
     _expiryDate=null;
     _userId=null;
@@ -30,6 +30,9 @@ class AuthProvider with ChangeNotifier {
       authTimer.cancel();
       authTimer=null;
     }
+    final prefs = await SharedPreferences.getInstance();
+    // prefs.remove('userData');
+    prefs.clear();
 
   }
 

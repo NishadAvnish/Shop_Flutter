@@ -4,6 +4,7 @@ import 'package:shop4/Provider/AuthProvider.dart';
 import 'package:shop4/Screen/OrderScreen.dart';
 import 'package:shop4/Screen/ProductsScreen.dart';
 import 'package:shop4/Screen/UserProductScreen.dart';
+import 'package:shop4/Screen/auth-screen.dart';
 
 class MyDrawer extends StatelessWidget{
   @override
@@ -59,9 +60,11 @@ class MyDrawer extends StatelessWidget{
                     leading: Icon(icon[3]),
                     title: Text(name[3]),
                     onTap: (){
-                      Navigator.of(context).pop(false);
-                      Navigator.popUntil(context, ModalRoute.withName("/"));
-                      Provider.of<AuthProvider>(context,listen: false).logout();
+                       Navigator.of(context).pop(false);  //to close the drawer otherwise it throw error
+                       Navigator.of(context).pushReplacementNamed('/');
+                       Provider.of<AuthProvider>(context,listen: false).logout();
+                     
+                     
                     },
 
                   ),
